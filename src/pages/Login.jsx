@@ -1,24 +1,31 @@
+import { useState } from "react";
 import useAuth from "../hooks/useAuth";
 
 const Login = () => {
 
-  const {login, user } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login, user} = useAuth();
   console.log(user);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await login(email, password);
+      console.log("Logged in");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <section>
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <div className="text-center lg:text-left">
             <h1 className="text-5xl font-bold">Login now!</h1>
-            <p className="py-6">
-              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-              excepturi exercitationem quasi. In deleniti eaque aut repudiandae
-              et a id nisi.
-            </p>
           </div>
           <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-            <form className="card-body">
+            <form className="card-body" onSubmit={handleSubmit}>
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Email</span>
@@ -28,6 +35,7 @@ const Login = () => {
                   placeholder="email"
                   className="input input-bordered"
                   required
+                  onBlur={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="form-control">
@@ -39,6 +47,7 @@ const Login = () => {
                   placeholder="password"
                   className="input input-bordered"
                   required
+                  onBlur={(e) => setPassword(e.target.value)}
                 />
                 <label className="label">
                   <a href="#" className="label-text-alt link link-hover">
@@ -47,7 +56,9 @@ const Login = () => {
                 </label>
               </div>
               <div className="form-control mt-6">
-                <button className="btn btn-primary">Login</button>
+                <button type="submit" className="btn btn-primary">
+                  Login
+                </button>
               </div>
             </form>
           </div>
